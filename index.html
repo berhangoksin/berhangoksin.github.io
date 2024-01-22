@@ -1,6 +1,62 @@
 <!DOCTYPE html>
-   <html>
-      <body>
-          <h1>Test</h1>
-      </body>
-   </html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram Giriş Sayfası</title>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '335618449296280', // Uygulama ID'nizi buraya girin
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v18.0' // Kullandığınız API sürümünü buraya girin, örneğin 'v10.0'
+        });
+
+        FB.AppEvents.logPageView();
+
+        // Kullanıcının giriş durumunu kontrol et
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+      };
+
+      // SDK'nın asenkron yüklenmesi
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+
+      // Giriş durumu değişikliği için geri çağırma fonksiyonu
+      function statusChangeCallback(response) {
+        console.log('Giriş durumu: ', response);
+        // Kullanıcı uygulamada giriş yapmışsa
+        if (response.status === 'connected') {
+          console.log('Başarıyla giriş yapıldı. Access Token: ' + response.authResponse.accessToken);
+          // Uygulamanın giriş yaptıktan sonraki davranışını burada yönetebilirsiniz.
+        } else {
+          // Kullanıcı uygulamada giriş yapmamış veya Facebook'ta giriş yapmamış.
+          // Giriş yapması için kullanıcıya yönlendirme yapabilirsiniz.
+          console.log('Kullanıcı uygulamada veya Facebook');
+        }
+      }
+
+      // Giriş butonunun geri çağırma fonksiyonu
+      function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      }
+    </script>
+</head>
+<body>
+    <h2>Instagram ile Giriş Yapın</h2>
+    <!-- Giriş butonu -->
+    <fb:login-button
+      scope="public_profile,email"
+      onlogin="checkLoginState();">
+    </fb:login-button>
+</body>
+</html>
